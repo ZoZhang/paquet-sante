@@ -220,9 +220,15 @@ a.label:focus,a.label:hover{color:#fff;text-decoration:none;cursor:pointer}
         padding: 0;
         max-width: 95%;
     }
-    
+
     .table thead th {
         min-width: 57px;
+    }
+
+    .table thead th:nth-child(3)
+    {
+        width: 7em;
+        word-break: keep-all;
     }
 
     .uploader h3 {
@@ -270,6 +276,12 @@ a.label:focus,a.label:hover{color:#fff;text-decoration:none;cursor:pointer}
 
     .table thead th {
         min-width: 57px;
+    }
+
+    .table thead th:nth-child(3)
+    {
+        width: 7em;
+        word-break: keep-all;
     }
 
     .uploader h3 {
