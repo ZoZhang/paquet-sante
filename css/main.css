@@ -141,6 +141,7 @@ a.label:focus,a.label:hover{color:#fff;text-decoration:none;cursor:pointer}
     vertical-align:middle;
     padding:10px 10px 0px 10px;
     display: flex;
+    min-width: 420px;
     justify-content: space-between;
     flex-flow: row-reverse;
     line-height: 30px;
@@ -263,6 +264,11 @@ a.label:focus,a.label:hover{color:#fff;text-decoration:none;cursor:pointer}
         width: 97%;
         max-height: 80px;
     }
+
+    .ajax-upload-dragdrop
+    {
+        min-width:initial;
+    }
 }
 
 
@@ -316,6 +322,12 @@ a.label:focus,a.label:hover{color:#fff;text-decoration:none;cursor:pointer}
         width: 97%;
         max-height: 80px;
     }
+
+    .ajax-upload-dragdrop
+    {
+        min-width:initial;
+    }
+
 }
 
 
