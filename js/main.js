@@ -21,6 +21,7 @@
         fileuploader: function() {
             let obj = this;
 
+            obj.sommaire = '<div class="sommaire"><label class="label label-success">已登记</label> <span><b>#IN_LIST#</b></span>&nbsp;&nbsp;&nbsp;&nbsp;<label class="label label-danger">未登记</label> <span><b>#NOT_IN_LIST#</b></span>';
             obj.errorMsg = '<div class="ajax-file-upload-error">#MESSAGE#</div>';
             obj.successMsg = '<div class="ajax-file-upload-success">#MESSAGE#</div>';
 
@@ -83,20 +84,22 @@
 
                             let html = '<tr><td>#name#</td><td>#sexe#</td><td>#tel#</td><td>#mail#</td><td>#univ#</td><td>#addr#</td><td>#status#</td></tr>';
 
-                            html = html.replace('#name#', personne.name);
-                            html = html.replace('#sexe#', personne.sexe);
-                            html = html.replace('#tel#', personne.tel);
-                            html = html.replace('#mail#', personne.mail);
-                            html = html.replace('#univ#', personne.univ);
-                            html = html.replace('#addr#', personne.addr);
+                            html = html.replace('#name#', personne[0]);
+                            html = html.replace('#sexe#', (personne[1] === 'F' ? '女' : '男'));
+                            html = html.replace('#tel#', personne[2]);
+                            html = html.replace('#mail#', personne[3]);
+                            html = html.replace('#univ#', personne[4]);
+                            html = html.replace('#addr#', personne[5]);
                             html = html.replace('#status#', personne.status ? '<label class="label label-success">已登记</label>' : '<label class="label label-danger">未登记</label>');
 
                             listHtml += html;
                         }
-                    }
+
+                    obj.uploader1.parent().prepend(obj.sommaire.replace('#IN_LIST#', data.total_counted).replace('#NOT_IN_LIST#', data.not_counted));
 
                     // check list data
                     obj.checkListRow.html(obj.checkList.replace('#CHECK_LIST#', listHtml));
+                    }
                 }
             });
         }
