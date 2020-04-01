@@ -29,18 +29,26 @@ class Amour {
 		    exit;
 		}
 
-
 		$fileName = $_FILES['table']['name'];
-		$dirName = explode('-', $fileName);
+		#$dirName = explode('-', $fileName);
 
+		// if (empty($dirName)) {
+		// 	$response['message'] = '请按规定格式重命名csv文件';
+		// 	print_r(json_encode($response));
+		// 	exit;
+		// }
 
-		if (empty($dirName)) {
-			$response['message'] = '请按规定格式重命名csv文件';
-			print_r(json_encode($response));
-			exit;
-		}
+	   // if (!stripos($fileName, 'csv')) {
+	   //     $response['message'] = '只能上传csv文件.';
+	   //     print_r(json_encode($response));
+		  //  exit;
+	   // }
 
-		self::$_settings['new_path'] = FILE_PATH . DS . $dirName{0};
+		$dirName = $_SERVER['REMOTE_ADDR'];
+
+		self::$_settings['new_path'] = FILE_PATH . DS . $dirName;
+		self::$_settings['backup_path'] = FILE_PATH . DS . 'backup' . DS . $dirName;
+
 		if (!is_dir(self::$_settings['new_path'])) {
 			@mkdir(self::$_settings['new_path']);
 		}
@@ -57,12 +65,6 @@ class Amour {
 			print_r(json_encode($response));
 			exit;
 		}
-
-	   if (!stripos($fileName, 'csv')) {
-	       $response['message'] = '只能上传csv文件.';
-	       print_r(json_encode($response));
-		   exit;
-	   }
 
 	   $newfile = self::$_settings['new_path'] . DS . $fileName;
 
@@ -98,11 +100,14 @@ class Amour {
 
 	public static function lock()
 	{
-		if (count(self::$_settings['files']) != 2) {
-			$response['message'] = '请稍后再试一次.';
-	        print_r(json_encode($response));
-		    exit;
-		}
+		// if (count(self::$_settings['files']) != 2) {
+		// 	$response = [
+	 // 			'error' => true,
+		// 	    'message' => '服务器内部错误，请稍后再试!'
+		// 	];
+	 //        print_r(json_encode($response));
+		//     exit;
+		// }
 
 		$loop = 0;
 		foreach (self::$_settings['files'] as $file)
@@ -120,6 +125,10 @@ class Amour {
 		    	$addr = $data[4];
 		    	$univ = $data[5];
 
+		    	if ($name == '姓名') {
+		    		continue;
+		    	}
+
 		    	if (0 == $loop) {
 					if (!empty($tel)) {
 						$fieldKey = $tel;
@@ -136,9 +145,16 @@ class Amour {
 						$response['message'] = '请稍后再试一次.';
 				        print_r(json_encode($response));
 					    exit;
+		    		} else {
+		    			$response['message'] = '';
 		    		}
 
 		    		foreach(self::$_settings['first_list'] as $key => $perso) {
+
+		    			if (empty($perso[1])) {
+		    				$perso[1] = $sexe;
+		    			}
+
 		    			if (((!empty($tel) && !empty($perso) && isset($perso[2])) && $tel == $perso[2])) {
 		    				$perso['status'] = true;
 							self::$_settings['last_list'][$tel] = $perso;
@@ -162,9 +178,17 @@ class Amour {
 
 			  $loop++;
 			  fclose($handle);
+
+			  if (!is_dir(self::$_settings['backup_path'])) {
+			  	  @mkdir(self::$_settings['backup_path']);
+			  }
+
+			  @copy(self::$_settings['new_path'] . DS . $file, self::$_settings['backup_path'] . DS. $file);
+			  @unlink(self::$_settings['new_path'] . DS . $file);
 		 }
 
 		 $notcounted = count(self::$_settings['first_list']);
+		 $total = count(self::$_settings['last_list']);
 
 		 if ($notcounted) {
 		 	foreach(self::$_settings['first_list'] as $key => $perso) {
@@ -173,7 +197,6 @@ class Amour {
 		 	}
 		 }
 
-		$total = count(self::$_settings['last_list']);
 
 		$response['error'] = false;
 	    $response['message'] = '';

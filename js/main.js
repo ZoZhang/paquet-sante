@@ -66,7 +66,7 @@
                 onSuccess:function(files,data,xhr) {
 
                     if (data.error) {
-                        obj.checkList.html('<hr/>');
+                        obj.checkListRow.html('<hr/>');
                         $('.ajax-file-upload-success', obj.uploader1).empty().remove();
                         obj.uploader1.append(obj.errorMsg.replace('#MESSAGE#', data.message));
                         return;
@@ -74,6 +74,7 @@
 
                     // success
                     obj.image.slideUp(300);
+                    $('.sommaire').empty().remove();
                     $('.ajax-file-upload-error', obj.uploader1).empty().remove();
                     obj.uploader1.append(obj.successMsg.replace('#MESSAGE#', data.message));
 
@@ -88,8 +89,8 @@
                             html = html.replace('#sexe#', (personne[1] === 'F' ? '女' : '男'));
                             html = html.replace('#tel#', personne[2]);
                             html = html.replace('#mail#', personne[3]);
-                            html = html.replace('#univ#', personne[4]);
-                            html = html.replace('#addr#', personne[5]);
+                            html = html.replace('#univ#', personne[5]);
+                            html = html.replace('#addr#', personne[4]);
                             html = html.replace('#status#', personne.status ? '<label class="label label-success">已登记</label>' : '<label class="label label-danger">未登记</label>');
 
                             listHtml += html;
