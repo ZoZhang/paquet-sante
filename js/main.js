@@ -28,13 +28,13 @@
             obj.checkList = ' <table class="table table-hover text-center">\n' +
                 '                        <thead>\n' +
                 '                        <tr>\n' +
-                '                        <th scope="col">姓名</th>\n' +
-                '                        <th scope="col">性别</th>\n' +
-                '                        <th scope="col">登记状态(使馆+学联)</th>\n' +
-                '                        <th scope="col">电话</th>\n' +
-                '                        <th scope="col">邮箱</th>\n' +
-                '                        <th scope="col">学校</th>\n' +
-                '                        <th scope="col">地址</th>\n' +
+                '                        <th scope="col" width="8%">姓名</th>\n' +
+                '                        <th scope="col" width="10%">性别</th>\n' +
+                '                        <th scope="col" width="10%">登记状态(使馆+学联)</th>\n' +
+                '                        <th scope="col" width="10%">电话</th>\n' +
+                '                        <th scope="col" width="10%">邮箱</th>\n' +
+                '                        <th scope="col" width="10%">学校</th>\n' +
+                '                        <th scope="col" width="10%">地址</th>\n' +
                 '                        </tr>\n' +
                 '                        </thead>\n' +
                 '                        <tbody>\n' +
@@ -85,13 +85,13 @@
 
                             let html = '<tr><td>#name#</td><td>#sexe#</td><td>#status#</td><td>#tel#</td><td>#mail#</td><td>#univ#</td><td>#addr#</td></tr>';
 
-                            html = html.replace('#name#', personne[0]);
-                            html = html.replace('#sexe#', (personne[1] === 'F' ? '女' : '男'));
+                            html = html.replace('#name#', personne[0] == "" ? "无名" : personne[0]);
+                            html = html.replace('#sexe#', (personne[1] == "" ? "未知" : (personne[1] === 'F' ? '女' : '男')));
                             html = html.replace('#status#', personne.status ? '<label class="label label-success">已登记</label>' : '<label class="label label-danger">未登记</label>');
-                            html = html.replace('#tel#', personne[2]);
-                            html = html.replace('#mail#', personne[3]);
-                            html = html.replace('#univ#', personne[5]);
-                            html = html.replace('#addr#', personne[4]);
+                            html = html.replace('#tel#', personne[2] == "" ? "未知" : personne[2]);
+                            html = html.replace('#mail#', personne[3] == "" ? "未知" : personne[3]);
+                            html = html.replace('#univ#', personne[5] == "" ? "未知" : personne[5]);
+                            html = html.replace('#addr#', personne[4] == "" ? "未知" : personne[4]);
 
                             listHtml += html;
                         }
