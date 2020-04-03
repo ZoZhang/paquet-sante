@@ -118,13 +118,37 @@ class Amour {
 
 			while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
 
-		    	$name = $data[0];
-		    	$sexe = $data[1] == '女' ? 'F' : ($data[1] == '男' ? 'M' : $data[1]);
-		    	$tel  = $data[2];
-		    	$mail = $data[3];
-		    	$addr = $data[4];
-		    	$univ = $data[5];
+				$name = '';
+				$sexe = '';
+				$tel  = '';
+				$mail = '';
+				$addr = ''; 
+				$univ = '';
 
+				if (isset($data[0])) {
+					$name = trim($data[0]);	
+				}
+
+				if (isset($data[1])) {
+					$sexe = !empty($data[1]) ? ($data[1] == '女' ? 'F' : ($data[1] == '男' ? 'M' : $data[1])) : '';
+				}
+
+				if (isset($data[2])) {
+					$tel = trim($data[2]);	
+				}
+
+				if (isset($data[3])) {
+					$mail = trim($data[3]);	
+				}
+
+				if (isset($data[4])) {
+					$addr = trim($data[4]);	
+				}
+
+				if (isset($data[5])) {
+					$univ = trim($data[5]);	
+				}
+		    	
 		    	if ($name == '姓名') {
 		    		continue;
 		    	}
@@ -136,6 +160,8 @@ class Amour {
 						$fieldKey = $mail;
 			    	} elseif (!empty($name) && !empty($sexe)) {
 			    		$fieldKey = md5($name.$sexe);
+			    	} elseif(!empty($name)) {
+			    		$fieldKey = md5($name);
 			    	}
 
 					self::$_settings['first_list'][$fieldKey] = [$name, $sexe, $tel, $mail, $addr, $univ];
@@ -169,6 +195,12 @@ class Amour {
 		    				 && md5($name.$sexe) == md5($perso[0].$perso[1]))) {
 							$perso['status'] = true;
 							self::$_settings['last_list'][md5($name.$sexe)] = $perso;
+							unset(self::$_settings['first_list'][$key]);
+		    			    break;
+		    			} elseif((!empty($name) && !empty($perso) && isset($perso[0]))
+		    				 && md5($name) == md5($perso[0])) {
+							$perso['status'] = true;
+							self::$_settings['last_list'][md5($name)] = $perso;
 							unset(self::$_settings['first_list'][$key]);
 		    			    break;
 		    			}
@@ -213,5 +245,3 @@ Amour::run();
 Amour::find();
 
 Amour::lock();
-
-
